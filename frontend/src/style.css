@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@source "../index.html";
+@source "./**/*.{vue,js,ts,jsx,tsx}";
+
+@theme {
+  --color-brand-50: #E6F2FF;
+  --color-brand-100: #CCE5FF;
+  --color-brand-200: #99CCFF;
+  --color-brand-300: #66B2FF;
+  --color-brand-400: #3399FF;
+  --color-brand-500: #0088FF;
+  --color-brand-600: #0077E6;
+  --color-brand-700: #0066CC;
+  --color-brand-800: #0055B3;
+  --color-brand-900: #004499;
+
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --shadow-brand: 0 2px 8px rgba(0, 136, 255, 0.25);
+  --shadow-brand-lg: 0 4px 16px rgba(0, 136, 255, 0.3);
+}
+
+/*
+ * 为 Tailwind v4 @apply 提供主题引用
+ * 在 scoped style 中使用 @apply 时需要引用此配置
+ */
+@utility brand-50 { background-color: var(--color-brand-50); }
+@utility brand-100 { background-color: var(--color-brand-100); }
+@utility brand-200 { background-color: var(--color-brand-200); }
+@utility brand-300 { background-color: var(--color-brand-300); }
+@utility brand-400 { background-color: var(--color-brand-400); }
+@utility brand-500 { background-color: var(--color-brand-500); }
+@utility brand-600 { background-color: var(--color-brand-600); }
+@utility brand-700 { background-color: var(--color-brand-700); }
+@utility brand-800 { background-color: var(--color-brand-800); }
+@utility brand-900 { background-color: var(--color-brand-900); }
+
+@utility text-brand-50 { color: var(--color-brand-50); }
+@utility text-brand-100 { color: var(--color-brand-100); }
+@utility text-brand-200 { color: var(--color-brand-200); }
+@utility text-brand-300 { color: var(--color-brand-300); }
+@utility text-brand-400 { color: var(--color-brand-400); }
+@utility text-brand-500 { color: var(--color-brand-500); }
+@utility text-brand-600 { color: var(--color-brand-600); }
+@utility text-brand-700 { color: var(--color-brand-700); }
+@utility text-brand-800 { color: var(--color-brand-800); }
+@utility text-brand-900 { color: var(--color-brand-900); }
+
+@utility border-brand-50 { border-color: var(--color-brand-50); }
+@utility border-brand-100 { border-color: var(--color-brand-100); }
+@utility border-brand-200 { border-color: var(--color-brand-200); }
+@utility border-brand-300 { border-color: var(--color-brand-300); }
+@utility border-brand-400 { border-color: var(--color-brand-400); }
+@utility border-brand-500 { border-color: var(--color-brand-500); }
+@utility border-brand-600 { border-color: var(--color-brand-600); }
+@utility border-brand-700 { border-color: var(--color-brand-700); }
+@utility border-brand-800 { border-color: var(--color-brand-800); }
+@utility border-brand-900 { border-color: var(--color-brand-900); }
+
+@utility shadow-brand { box-shadow: var(--shadow-brand); }
+@utility shadow-brand-lg { box-shadow: var(--shadow-brand-lg); }

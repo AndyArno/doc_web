@@ -1,0 +1,50 @@
+[project]
+name = "ros-teaching-backend"
+version = "1.0.0"
+description = "ROS小车教学网站后端 API"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy[asyncio]",
+    "asyncpg",
+    "python-jose[cryptography]",
+    "passlib[bcrypt]",
+    "bcrypt>=4.0.0,<5.0.0",
+    "pydantic-settings",
+    "alembic[asyncio]",
+    "python-multipart",
+    "aiofiles",
+    "email-validator",
+    "jieba>=0.42.1",
+    "py7zr>=1.1.0",
+    "rarfile>=4.2",
+    "pypinyin",
+    "redis>=5.0",
+    "slowapi",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "httpx",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "aiosqlite>=0.22.1",
+    "pytest-cov>=7.1.0",
+]

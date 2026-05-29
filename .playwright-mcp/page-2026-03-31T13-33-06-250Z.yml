@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e22]:
+    - banner [ref=e23]:
+      - generic [ref=e24]:
+        - link "ROS小车教学" [ref=e26] [cursor=pointer]:
+          - /url: /
+          - img [ref=e28]
+          - generic [ref=e30]: ROS小车教学
+        - generic [ref=e31]:
+          - generic [ref=e34]:
+            - img [ref=e35]
+            - textbox "搜索内容..." [ref=e38]
+            - generic:
+              - generic: Ctrl
+              - generic: K
+          - link [ref=e39] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e40]
+          - button "test_editor" [ref=e46]:
+            - img [ref=e48]
+            - generic [ref=e51]: test_editor
+            - img [ref=e52]
+          - button [ref=e54]:
+            - img [ref=e55]
+    - main [ref=e56]:
+      - generic [ref=e57]:
+        - heading "ROS小车 教学资源中心" [level=1] [ref=e58]
+        - paragraph [ref=e59]: 这里有最全的 ROS 小车学习教材，从入门到精通，助你掌握机器人操作系统的核心技术。
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "精选教材" [level=2] [ref=e64]
+          - generic [ref=e65]: 共 1 本
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - img [ref=e69]
+            - generic [ref=e71]: Textbook
+          - generic [ref=e72]:
+            - heading "测试节点" [level=3] [ref=e73]
+            - paragraph [ref=e74]: 暂无详细介绍，快来开启你的 ROS 学习之旅吧！
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - img [ref=e77]
+                - generic [ref=e80]: 管理员
+              - link "开始阅读" [ref=e81] [cursor=pointer]:
+                - /url: /textbook/13
+                - text: 开始阅读
+                - img [ref=e82]
+    - contentinfo [ref=e84]:
+      - paragraph [ref=e86]: © 2026 ROS小车教学网站. All rights reserved.
+  - alert [ref=e87]:
+    - img [ref=e89]
+    - generic [ref=e92]: 登录成功

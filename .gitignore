@@ -1,0 +1,70 @@
+# docs
+docs/
+
+#test
+test_tmp/
+tests/
+
+# OpenCode planning files
+.sisyphus/
+
+# Environment variables
+.env
+.env.local
+backend/.env
+backend/.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Database
+*.db
+
+# Test coverage
+.coverage
+htmlcov/
+.coverage.*
+
+# Test files (local verification only, not committed)
+backend/tests/
+
+# Performance test scripts (local only)
+tests/
+
+# Scratch / prototype scripts
+backend/search_prototype.py
+backend/scripts/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+# Frontend test files (local verification only, not committed)
+*.test.ts
+*.test.js
+

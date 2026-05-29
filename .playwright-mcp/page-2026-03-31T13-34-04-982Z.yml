@@ -1,0 +1,76 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "ROS小车教学" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+          - generic [ref=e12]: ROS小车教学
+        - navigation [ref=e13]:
+          - link "教材管理" [ref=e14] [cursor=pointer]:
+            - /url: /admin/textbooks
+          - link "媒体库" [ref=e15] [cursor=pointer]:
+            - /url: /admin/media
+      - generic [ref=e16]:
+        - generic [ref=e19]:
+          - img [ref=e20]
+          - textbox "搜索内容..." [ref=e23]
+          - generic:
+            - generic: Ctrl
+            - generic: K
+        - link [ref=e24] [cursor=pointer]:
+          - /url: /
+          - img [ref=e25]
+        - button "test_editor" [ref=e28]:
+          - img [ref=e30]
+          - generic [ref=e33]: test_editor
+          - img [ref=e34]
+        - button [ref=e36]:
+          - img [ref=e37]
+  - generic [ref=e38]:
+    - complementary [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]: 管理菜单
+        - button [ref=e42]:
+          - img [ref=e43]
+      - generic [ref=e46]:
+        - navigation [ref=e47]:
+          - generic [ref=e48]: 主要模块
+          - generic [ref=e49]:
+            - link "教材管理" [ref=e50] [cursor=pointer]:
+              - /url: /admin/textbooks
+              - img [ref=e51]
+              - text: 教材管理
+            - link "媒体库" [ref=e53] [cursor=pointer]:
+              - /url: /admin/media
+              - img [ref=e54]
+              - text: 媒体库
+        - navigation [ref=e58]:
+          - generic [ref=e59]: 教材管理
+          - generic [ref=e60]:
+            - button "全部教材" [ref=e61]:
+              - generic [ref=e62]: 全部教材
+            - button "已发布" [ref=e63]:
+              - generic [ref=e64]: 已发布
+              - img [ref=e65]
+            - button "草稿" [ref=e67]:
+              - generic [ref=e68]: 草稿
+              - img [ref=e69]
+    - main [ref=e71]:
+      - generic [ref=e73]:
+        - generic [ref=e75]:
+          - heading "教材管理" [level=1] [ref=e76]
+          - paragraph [ref=e77]: 管理系统中的所有教材及其发布状态
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - img [ref=e80]
+            - textbox "搜索教材标题或描述..." [ref=e83]
+          - generic [ref=e84]:
+            - combobox [ref=e85] [cursor=pointer]:
+              - option "全部状态" [selected]
+              - option "已发布"
+              - option "草稿"
+            - button "筛选" [ref=e86]
+        - generic [ref=e87]:
+          - img [ref=e89]
+          - paragraph [ref=e91]: 正在加载教材数据...

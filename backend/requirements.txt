@@ -1,0 +1,20 @@
+# Production dependencies for ROS小车教学网站
+# Install: pip install -r requirements.txt
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt>=4.0.0,<5.0.0
+pydantic-settings
+alembic[asyncio]
+python-multipart
+aiofiles
+email-validator
+jieba>=0.42.1
+py7zr>=1.1.0
+rarfile>=4.2
+pypinyin
+redis>=5.0
+slowapi
