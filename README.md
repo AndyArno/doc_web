@@ -180,12 +180,12 @@ redis-cli ping
 
 ```bash
 # 创建部署目录
-sudo mkdir -p /opt/document_web
-sudo chown $USER:$USER /opt/document_web
+sudo mkdir -p /opt/doc_web
+sudo chown $USER:$USER /opt/doc_web
 
-# 克隆代码（将 <repository-url> 替换为你的 Git 仓库地址）
-cd /opt/document_web
-git clone <repository-url> .
+# 克隆代码（替换为公开仓库地址 https://github.com/AndyArno/doc_web.git）
+cd /opt/doc_web
+git clone https://github.com/AndyArno/doc_web.git .
 
 # 确认文件结构
 ls -la
@@ -195,7 +195,7 @@ ls -la
 ### 5.2 创建虚拟环境并安装依赖
 
 ```bash
-cd /opt/document_web/backend
+cd /opt/doc_web/backend
 
 # uv 自动下载 Python 3.13+ 并创建虚拟环境
 uv venv
@@ -243,7 +243,7 @@ uv pip list | grep -E "fastapi|uvicorn|sqlalchemy|asyncpg|redis|slowapi"
 ### 6.1 从模板复制 .env 文件
 
 ```bash
-cd /opt/document_web/backend
+cd /opt/doc_web/backend
 cp .env.example .env
 ```
 
@@ -317,7 +317,7 @@ openssl rand -hex 32
 使用 Alembic 执行数据库表创建。
 
 ```bash
-cd /opt/document_web/backend
+cd /opt/doc_web/backend
 
 # 确保虚拟环境已激活
 source .venv/bin/activate
@@ -362,7 +362,7 @@ npm --version    # 应输出 10.x.x 或更高
 ### 8.2 安装前端依赖
 
 ```bash
-cd /opt/document_web/frontend
+cd /opt/doc_web/frontend
 
 # 安装依赖
 npm install
@@ -416,7 +416,7 @@ dist/
 
 ```bash
 # 确保 Nginx 可以读取静态文件
-sudo chmod -R 755 /opt/document_web/frontend/dist
+sudo chmod -R 755 /opt/doc_web/frontend/dist
 ```
 
 ---
@@ -441,7 +441,7 @@ sudo systemctl start nginx
 ### 9.2 创建站点配置文件
 
 ```bash
-sudo nano /etc/nginx/sites-available/document-web
+sudo nano /etc/nginx/sites-available/doc-web
 ```
 
 粘贴以下完整配置（包含详细注释）：
@@ -449,7 +449,7 @@ sudo nano /etc/nginx/sites-available/document-web
 ```nginx
 # ==================================================================
 # ROS小车教学网站 - Nginx 站点配置
-# 文件路径: /etc/nginx/sites-available/document-web
+# 文件路径: /etc/nginx/sites-available/doc-web
 # 功能: SPA 静态文件 + API 反向代理
 # ==================================================================
 
@@ -462,8 +462,8 @@ server {
     # ================================================================
     # 日志配置
     # ================================================================
-    access_log /var/log/nginx/document-web-access.log;
-    error_log /var/log/nginx/document-web-error.log;
+    access_log /var/log/nginx/doc-web-access.log;
+    error_log /var/log/nginx/doc-web-error.log;
 
     # ================================================================
     # 上传文件大小限制（与后端 MAX_UPLOAD_SIZE 保持一致: 100MB）
@@ -476,7 +476,7 @@ server {
     #   Vue Router 在浏览器端处理路由，因此所有路径都应由 index.html 响应
     # ================================================================
     location / {
-        root /opt/document_web/frontend/dist;
+        root /opt/doc_web/frontend/dist;
         index index.html;
         try_files $uri $uri/ /index.html;
 
@@ -542,7 +542,7 @@ server {
 
 ```bash
 # 创建软链接启用站点
-sudo ln -s /etc/nginx/sites-available/document-web /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/doc-web /etc/nginx/sites-enabled/
 
 # 删除默认站点（可选，避免冲突）
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -575,7 +575,7 @@ curl -I http://your-server-ip/
 ### 10.1 创建服务文件
 
 ```bash
-sudo nano /etc/systemd/system/document-web.service
+sudo nano /etc/systemd/system/doc-web.service
 ```
 
 粘贴以下完整配置：
@@ -583,18 +583,18 @@ sudo nano /etc/systemd/system/document-web.service
 ```ini
 # ==================================================================
 # ROS小车教学网站 - 后端 API systemd 服务
-# 文件路径: /etc/systemd/system/document-web.service
+# 文件路径: /etc/systemd/system/doc-web.service
 # 管理命令:
-#   启动: sudo systemctl start document-web
-#   停止: sudo systemctl stop document-web
-#   重启: sudo systemctl restart document-web
-#   状态: sudo systemctl status document-web
-#   日志: sudo journalctl -u document-web -f
+#   启动: sudo systemctl start doc-web
+#   停止: sudo systemctl stop doc-web
+#   重启: sudo systemctl restart doc-web
+#   状态: sudo systemctl status doc-web
+#   日志: sudo journalctl -u doc-web -f
 # ==================================================================
 
 [Unit]
 Description=ROS小车教学网站 Backend API
-Documentation=https://github.com/your-org/document-web
+Documentation=https://github.com/AndyArno/doc_web
 After=network.target postgresql.service redis-server.service
 Requires=postgresql.service redis-server.service
 Wants=network-online.target
@@ -604,24 +604,24 @@ Wants=network-online.target
 Type=simple
 
 # 运行用户和组
-# 注意: 确保 www-data 用户有权限读取 /opt/document_web/backend/
+# 注意: 确保 www-data 用户有权限读取 /opt/doc_web/backend/
 User=www-data
 Group=www-data
 
 # 工作目录
-WorkingDirectory=/opt/document_web/backend
+WorkingDirectory=/opt/doc_web/backend
 
 # 环境变量
 Environment="PYTHONUNBUFFERED=1"
 
 # 从 .env 文件加载环境变量
-EnvironmentFile=/opt/document_web/backend/.env
+EnvironmentFile=/opt/doc_web/backend/.env
 
 # 启动命令
 # --host 127.0.0.1: 仅监听本地回环，由 Nginx 对外暴露（安全）
 # --port 8000: FastAPI 默认端口
 # 如需更多 worker，可添加 --workers N 参数（默认 1 worker）
-ExecStart=/opt/document_web/backend/.venv/bin/uvicorn app.main:app \
+ExecStart=/opt/doc_web/backend/.venv/bin/uvicorn app.main:app \
     --host 127.0.0.1 \
     --port 8000
 
@@ -641,7 +641,7 @@ PrivateTmp=yes
 # 日志配置
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=document-web
+SyslogIdentifier=doc-web
 
 [Install]
 # 随系统启动（multi-user.target 即服务器正常运行模式）
@@ -654,19 +654,19 @@ systemd 服务以 `www-data` 用户运行，需要确保该用户有权限访问
 
 ```bash
 # 设置后端目录所有者
-sudo chown -R www-data:www-data /opt/document_web/backend
+sudo chown -R www-data:www-data /opt/doc_web/backend
 
 # 确保上传目录可写
-sudo mkdir -p /opt/document_web/backend/uploads/images
-sudo chown -R www-data:www-data /opt/document_web/backend/uploads
+sudo mkdir -p /opt/doc_web/backend/uploads/images
+sudo chown -R www-data:www-data /opt/doc_web/backend/uploads
 
 # 确保 .env 文件可读（但不要设为全局可读，因为包含密码）
-sudo chown www-data:www-data /opt/document_web/backend/.env
-sudo chmod 600 /opt/document_web/backend/.env
+sudo chown www-data:www-data /opt/doc_web/backend/.env
+sudo chmod 600 /opt/doc_web/backend/.env
 
 # 恢复代码文件为 root 所有（防止通过 Web 进程修改源码）
-sudo chown -R root:root /opt/document_web/backend/app
-sudo chmod -R 755 /opt/document_web/backend/app
+sudo chown -R root:root /opt/doc_web/backend/app
+sudo chmod -R 755 /opt/doc_web/backend/app
 ```
 
 ### 10.3 启用服务
@@ -676,10 +676,10 @@ sudo chmod -R 755 /opt/document_web/backend/app
 sudo systemctl daemon-reload
 
 # 启用开机自启
-sudo systemctl enable document-web
+sudo systemctl enable doc-web
 
 # 验证服务文件是否正确
-sudo systemctl show document-web | grep -E "ExecStart|User|Group|Restart"
+sudo systemctl show doc-web | grep -E "ExecStart|User|Group|Restart"
 ```
 
 ---
@@ -690,14 +690,14 @@ sudo systemctl show document-web | grep -E "ExecStart|User|Group|Restart"
 
 ```bash
 # 启动后端 API 服务
-sudo systemctl start document-web
+sudo systemctl start doc-web
 
 # 查看运行状态
-sudo systemctl status document-web
+sudo systemctl status doc-web
 # 应显示 active (running)
 
 # 查看实时日志（确认没有错误）
-sudo journalctl -u document-web -f
+sudo journalctl -u doc-web -f
 # 按 Ctrl+C 退出日志
 ```
 
@@ -814,7 +814,7 @@ sudo mkdir -p /etc/nginx/ssl
 编辑 Nginx 站点配置：
 
 ```bash
-sudo nano /etc/nginx/sites-available/document-web
+sudo nano /etc/nginx/sites-available/doc-web
 ```
 
 在现有 `server` 块之外，添加以下 HTTPS 配置（完整替换方案见下方）：
@@ -858,15 +858,15 @@ server {
     add_header Strict-Transport-Security "max-age=63072000" always;
 
     # 日志
-    access_log /var/log/nginx/document-web-access.log;
-    error_log /var/log/nginx/document-web-error.log;
+    access_log /var/log/nginx/doc-web-access.log;
+    error_log /var/log/nginx/doc-web-error.log;
 
     # 上传文件大小限制
     client_max_body_size 100m;
 
     # 前端静态文件
     location / {
-        root /opt/document_web/frontend/dist;
+        root /opt/doc_web/frontend/dist;
         index index.html;
         try_files $uri $uri/ /index.html;
     }
@@ -924,23 +924,23 @@ crontab -l | grep acme.sh
 
 ```bash
 # 查看 systemd 服务日志
-sudo journalctl -u document-web -f
+sudo journalctl -u doc-web -f
 
 # 查看最近的错误
-sudo journalctl -u document-web -n 50 --no-pager
+sudo journalctl -u doc-web -n 50 --no-pager
 ```
 
 **可能原因**:
 
 1. **`.env` 文件权限不对**: systemd 服务以 `www-data` 用户运行，但 `.env` 文件权限为 600 且属于 root 用户。
    ```bash
-   sudo chown www-data:www-data /opt/document_web/backend/.env
-   sudo chmod 600 /opt/document_web/backend/.env
+   sudo chown www-data:www-data /opt/doc_web/backend/.env
+   sudo chmod 600 /opt/doc_web/backend/.env
    ```
 
 2. **Python 虚拟环境损坏**: 重新创建虚拟环境并安装依赖。
    ```bash
-   cd /opt/document_web/backend
+   cd /opt/doc_web/backend
    rm -rf .venv
    uv venv
    source .venv/bin/activate
@@ -955,7 +955,7 @@ sudo journalctl -u document-web -n 50 --no-pager
 4. **依赖缺失**: `systemd` 无法找到 Python 模块。
    ```bash
    # 手动启动测试
-   cd /opt/document_web/backend
+   cd /opt/doc_web/backend
    sudo -u www-data .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
    # 观察控制台输出的错误信息
    ```
@@ -964,14 +964,14 @@ sudo journalctl -u document-web -n 50 --no-pager
 
 ```bash
 # 确认 dist 目录存在且有 index.html
-ls -la /opt/document_web/frontend/dist/
+ls -la /opt/doc_web/frontend/dist/
 ```
 
 **可能原因**:
 
 1. **前端未构建**: 重新执行构建步骤。
    ```bash
-   cd /opt/document_web/frontend
+   cd /opt/doc_web/frontend
    npm install && npm run build
    ```
 
@@ -979,7 +979,7 @@ ls -la /opt/document_web/frontend/dist/
 
 3. **文件权限问题**: Nginx 的 worker 进程（通常是 `www-data` 用户）无法读取文件。
    ```bash
-   sudo chmod -R 755 /opt/document_web/frontend/dist
+   sudo chmod -R 755 /opt/doc_web/frontend/dist
    ```
 
 ### 14.3 API 返回 503 "系统尚未初始化"
@@ -997,7 +997,7 @@ curl http://localhost/api/v1/setup/status
 
 ```bash
 # 查看具体错误
-sudo journalctl -u document-web -n 20 | grep -i "database\|connection\|postgres"
+sudo journalctl -u doc-web -n 20 | grep -i "database\|connection\|postgres"
 ```
 
 **检查清单**:
@@ -1033,8 +1033,8 @@ sudo systemctl enable redis-server
 
 1. 检查 `uploads/` 目录权限：
    ```bash
-   sudo chown -R www-data:www-data /opt/document_web/backend/uploads
-   sudo chmod 755 /opt/document_web/backend/uploads
+   sudo chown -R www-data:www-data /opt/doc_web/backend/uploads
+   sudo chmod 755 /opt/doc_web/backend/uploads
    ```
 
 2. 检查 Nginx `client_max_body_size` 和 `.env` 中的 `MAX_UPLOAD_SIZE`（默认 100MB）。
@@ -1053,20 +1053,20 @@ sudo systemctl enable redis-server
 
 ### 14.8 性能问题
 
-- **增加 uvicorn worker 数**: 编辑 systemd 服务文件，在 `ExecStart` 后添加 `--workers 4`（建议 worker 数 = CPU 核数），然后 `sudo systemctl daemon-reload && sudo systemctl restart document-web`。
+- **增加 uvicorn worker 数**: 编辑 systemd 服务文件，在 `ExecStart` 后添加 `--workers 4`（建议 worker 数 = CPU 核数），然后 `sudo systemctl daemon-reload && sudo systemctl restart doc-web`。
 - **开启 PostgreSQL 查询日志**: 在 `postgresql.conf` 中设置 `log_min_duration_statement = 1000` 记录慢查询。
 
 ### 14.9 常规诊断命令速查
 
 ```bash
 # 后端日志
-sudo journalctl -u document-web -f
+sudo journalctl -u doc-web -f
 
 # Nginx 访问日志
-sudo tail -f /var/log/nginx/document-web-access.log
+sudo tail -f /var/log/nginx/doc-web-access.log
 
 # Nginx 错误日志
-sudo tail -f /var/log/nginx/document-web-error.log
+sudo tail -f /var/log/nginx/doc-web-error.log
 
 # PostgreSQL 日志
 sudo journalctl -u postgresql -f
@@ -1081,7 +1081,7 @@ df -h
 free -h
 
 # 进程列表
-sudo systemctl list-units --type=service | grep -E "document-web|nginx|postgres|redis"
+sudo systemctl list-units --type=service | grep -E "doc-web|nginx|postgres|redis"
 ```
 
 
@@ -1093,7 +1093,7 @@ sudo systemctl list-units --type=service | grep -E "document-web|nginx|postgres|
 
 ```bash
 # 拉取最新代码
-cd /opt/document_web
+cd /opt/doc_web
 git pull
 
 # 如有数据库迁移，执行迁移
@@ -1107,26 +1107,26 @@ npm install
 npm run build
 
 # 重启后端服务
-sudo systemctl restart document-web
+sudo systemctl restart doc-web
 
 # 重载 Nginx（前端静态文件变更时需要）
 sudo systemctl reload nginx
 ```
 
-> **提示**: 如果只是后端代码变更（不涉及数据库迁移和前端），只需执行 `git pull` + `sudo systemctl restart document-web` 即可。
+> **提示**: 如果只是后端代码变更（不涉及数据库迁移和前端），只需执行 `git pull` + `sudo systemctl restart doc-web` 即可。
 
 ### 15.1 查看服务状态
 
 ```bash
 # 确认服务正常运行
-sudo systemctl status document-web
+sudo systemctl status doc-web
 
 # 查看最新日志确认无报错
-sudo journalctl -u document-web -n 20 --no-pager
+sudo journalctl -u doc-web -n 20 --no-pager
 ```
 
 ---
 
 > **本文档是纯手动部署指南。** 项目当前不包含 Docker 或 Docker Compose 支持。如需容器化部署，请参考官方 Docker 文档自行编写 Dockerfile。
 >
-> **遇到问题？** 查看后端日志（`journalctl -u document-web -f`）和 Nginx 错误日志（`tail -f /var/log/nginx/document-web-error.log`）通常能定位 90% 的问题。
+> **遇到问题？** 查看后端日志（`journalctl -u doc-web -f`）和 Nginx 错误日志（`tail -f /var/log/nginx/doc-web-error.log`）通常能定位 90% 的问题。
