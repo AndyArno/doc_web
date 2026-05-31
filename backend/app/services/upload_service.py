@@ -31,6 +31,7 @@ from app.services import version_service
 from app.services.permission_service import check_textbook_permission
 from app.utils.archive_extractor import ArchiveExtractor
 from app.utils.image_processor import ImageProcessor
+from app.utils.chapter_sort import parse_folder_number
 
 
 # === 常量定义 ===
@@ -453,8 +454,30 @@ async def upload_markdown_zip(
 
         # ===== 执行两阶段处理 =====
 
+        # 智能包装文件夹判断：单顶层目录 + 无章节标识 → 跳过包装层
+        scan_root = Path(temp_dir)
+        SYSTEM_FILES = {"Thumbs.db", "desktop.ini", ".DS_Store"}
+        try:
+            root_items = list(Path(temp_dir).iterdir())
+            root_dirs = [i for i in root_items if i.is_dir() and not i.name.startswith(".")]
+            root_files = [
+                i for i in root_items
+                if i.is_file()
+                and not i.name.startswith(".")
+                and i.name not in SYSTEM_FILES
+            ]
+            if len(root_dirs) == 1 and len(root_files) == 0:
+                folder_name = root_dirs[0].name
+                if parse_folder_number(folder_name) is None:
+                    scan_root = root_dirs[0]
+                    warnings.append(
+                        f"已跳过非章节包装文件夹: {folder_name}（其内容已作为根级章节导入）"
+                    )
+        except OSError:
+            pass
+
         # 第一阶段：扫描目录，创建文件夹章节，收集文件
-        await scan_directory(Path(temp_dir), 1, None)
+        await scan_directory(scan_root, 1, None)
 
         # 第二阶段：批量创建所有图片的 Media 记录
         for item, depth, chapter_id, relative_path in collected_images:
