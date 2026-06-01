@@ -334,7 +334,7 @@ async def upload_markdown_zip(
 
             Args:
                 directory: 当前扫描目录
-                depth: 当前深度（1-3）
+                depth: 当前深度（1-6）
                 parent_chapter_id: 父章节 ID
             """
             nonlocal chapters_count
@@ -356,7 +356,7 @@ async def upload_markdown_zip(
             # 收集图片文件信息
             for item in image_items:
                 relative_path = str(item.relative_to(Path(temp_dir)))
-                if depth > 3:
+                if depth > 6:
                     warnings.append(f"忽略超过3层图片: {relative_path}")
                     continue
 
@@ -370,7 +370,7 @@ async def upload_markdown_zip(
             # 收集 Markdown 文件信息
             for item in md_items:
                 relative_path = str(item.relative_to(Path(temp_dir)))
-                if depth > 3:
+                if depth > 6:
                     warnings.append(f"忽略超过3层文件: {relative_path}")
                     continue
 
@@ -379,7 +379,7 @@ async def upload_markdown_zip(
             # 创建文件夹章节并递归扫描
             for item in dir_items:
                 relative_path = str(item.relative_to(Path(temp_dir)))
-                if depth > 3:
+                if depth > 6:
                     warnings.append(f"忽略超过3层目录: {relative_path}")
                     continue
 

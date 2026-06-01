@@ -31,7 +31,7 @@ from app.utils.chapter import build_chapter_tree, flatten_chapters
 logger = logging.getLogger(__name__)
 
 # 最大章节层级
-MAX_LEVEL = 3
+MAX_LEVEL = 6
 
 
 async def _ensure_unique_slug(

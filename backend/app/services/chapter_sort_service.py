@@ -20,7 +20,7 @@ from app.utils.chapter_sort import (
 
 
 # 最大章节层级
-MAX_LEVEL = 3
+MAX_LEVEL = 6
 
 
 async def match_folder(
@@ -648,7 +648,14 @@ async def apply_sort(
                 if parent_id is None:
                     chapter.level = 1
                 elif parent_id in chapters_map:
-                    chapter.level = chapters_map[parent_id].level + 1
+                    new_level = chapters_map[parent_id].level + 1
+                    if new_level > MAX_LEVEL:
+                        raise AppException(
+                            code=400,
+                            message=f"章节层级不能超过 {MAX_LEVEL} 层",
+                            data=None,
+                        )
+                    chapter.level = new_level
 
                 if old_order != order["order_index"] or old_parent != parent_id:
                     changes_count += 1
@@ -723,7 +730,14 @@ async def undo_sort(textbook_id: int, db: AsyncSession) -> bool:
                     chapter.level = 1
                 elif item["parent_id"] in chapters_map:
                     parent = chapters_map[item["parent_id"]]
-                    chapter.level = parent.level + 1
+                    new_level = parent.level + 1
+                    if new_level > MAX_LEVEL:
+                        raise AppException(
+                            code=400,
+                            message=f"章节层级不能超过 {MAX_LEVEL} 层",
+                            data=None,
+                        )
+                    chapter.level = new_level
 
     snapshot.is_active = False
 
