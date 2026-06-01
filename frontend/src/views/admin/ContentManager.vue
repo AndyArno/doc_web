@@ -715,7 +715,7 @@ const nodeTypeOptions = computed(() => {
   ]
   
   // If parent is level 2+, exclude folder option (would create level 3+ folder, exceeds 3-level limit)
-  if (selectedParentLevel.value >= 2) {
+  if (selectedParentLevel.value >= 5) {
     return options.filter(opt => opt.value !== 'folder')
   }
   
@@ -1284,7 +1284,7 @@ const handleCrossLevelReorder = async (payload) => {
     if (payload.error === 'ARTICLE_CANNOT_HAVE_CHILDREN') {
       toast.error('文章节点不能包含子节点')
     } else if (payload.error === 'LEVEL_LIMIT_EXCEEDED') {
-      toast.error('层级超出限制，最多支持三级章节')
+      toast.error('层级超出限制，最多支持六层章节')
     } else if (payload.error === 'CIRCULAR_REFERENCE') {
       toast.error('不能将父节点拖入其子节点下')
     }

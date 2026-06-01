@@ -1,5 +1,5 @@
 <template>
-  <div class="tree-node-container" :class="{ 'last-level': level >= 2 }">
+  <div class="tree-node-container" :class="{ 'last-level': level >= 5 }">
     <!-- 节点项目：包含图标、标题和编辑按钮 -->
     <div
       class="group flex items-center py-2 px-3 cursor-pointer transition-colors duration-200 select-none"
@@ -396,7 +396,7 @@ const handleDragChange = (event) => {
     const maxDescendantDepth = getMaxDescendantDepth(element)
     const maxResultingLevel = newLevel + maxDescendantDepth
     
-    if (maxResultingLevel > 2) {
+    if (maxResultingLevel > 5) {
       emit('reorder', {
         chapterId: element.id,
         newParentId: props.node.parent_id,
@@ -478,7 +478,7 @@ const handleDrop = (payload) => {
     
     // 如果目标节点是 level 2（第三层），则不能作为父节点
     // 将 newParentId 调整为该节点的父节点
-    if (targetInfo && targetInfo.level >= 2) {
+    if (targetInfo && targetInfo.level >= 5) {
       emit('reorder', {
         chapterId,
         newParentId: targetInfo.node.parent_id,

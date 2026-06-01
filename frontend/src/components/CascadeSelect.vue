@@ -191,13 +191,13 @@ interface Props {
   chapters: ChapterTreeNode[]
   placeholder?: string
   disabled?: boolean
-  /** Maximum level of folders that can be selected as parent (default: 3, allows levels 0-2) */
+  /** Maximum level of folders that can be selected as parent (default: 6, allows levels 0-5) */
   maxLevel?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
-  maxLevel: 3
+  maxLevel: 6
 })
 
 const emit = defineEmits<{
