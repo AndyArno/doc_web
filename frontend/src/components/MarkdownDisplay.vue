@@ -11,6 +11,8 @@ import hljs from 'highlight.js';
 import DOMPurify from 'dompurify';
 import 'highlight.js/styles/github-dark.min.css';
 import { getMediaUrl } from '@/utils/url';
+import katex from 'katex'
+import texmath from 'markdown-it-texmath'
 
 const props = defineProps({
   content: {
@@ -39,6 +41,9 @@ const md = markdownIt({
     return `<pre class="hljs rounded-xl my-4 overflow-hidden"><code class="p-4 block font-mono text-[15px] leading-normal">${md.utils.escapeHtml(str)}</code></pre>`;
   }
 });
+
+md.use(texmath, { engine: katex, delimiters: 'dollars' })
+md.linkify.set({ fuzzyLink: false })
 
 /**
  * 为标题添加 ID 并提取目录项
@@ -188,7 +193,13 @@ const updateContent = () => {
     }
   });
 
-  renderedHtml.value = DOMPurify.sanitize(md.render(props.content));
+  renderedHtml.value = DOMPurify.sanitize(md.render(props.content), {
+    ADD_TAGS: ['math', 'semantics', 'annotation', 'mrow', 'mi', 'mn', 'mo',
+               'msup', 'msub', 'mfrac', 'mtext', 'mspace', 'mstyle',
+               'mtable', 'mtr', 'mtd', 'munder', 'mover', 'mphantom',
+               'menclose', 'msqrt', 'mroot'],
+    ADD_ATTR: ['aria-hidden', 'stretchy', 'linethickness', 'columnspacing', 'rowspacing']
+  });
   emit('toc-update', toc);
 };
 
