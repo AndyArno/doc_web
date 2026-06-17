@@ -241,7 +241,7 @@ onMounted(updateContent);
   @apply border-l-4 border-brand-500 bg-brand-50 px-6 py-4 rounded-r-lg mb-6 italic text-gray-800;
 }
 .markdown-body :deep(table) {
-  @apply w-full border-collapse mb-6 border border-gray-200 rounded-lg overflow-hidden;
+  @apply w-full border-separate border-spacing-0 mb-6 border-2 border-black rounded-lg overflow-hidden;
 }
 .markdown-body :deep(thead) {
   @apply bg-gray-50;
