@@ -101,9 +101,10 @@ md.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
   return `<${token.tag} data-source-line="${line}">`;
 };
 
-// 段落 - 添加源行号
+// 段落 - 添加源行号（跳过列表项内隐藏的段落标签）
 md.renderer.rules.paragraph_open = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
+  if (token.hidden) return '';
   const line = token.map ? token.map[0] : 0;
   return `<p data-source-line="${line}">`;
 };
@@ -228,10 +229,10 @@ onMounted(updateContent);
   @apply text-base leading-[1.75] mb-4 text-gray-700;
 }
 .markdown-body :deep(ul) {
-  @apply list-disc list-inside mb-4 pl-4 space-y-2;
+  @apply list-disc list-outside mb-4 pl-6 space-y-2;
 }
 .markdown-body :deep(ol) {
-  @apply list-decimal list-inside mb-4 pl-4 space-y-2;
+  @apply list-decimal list-outside mb-4 pl-6 space-y-2;
 }
 .markdown-body :deep(li) {
   @apply text-gray-700;
