@@ -7,6 +7,7 @@
 import os
 import re
 from typing import TYPE_CHECKING
+from urllib.parse import unquote
 
 if TYPE_CHECKING:
     from app.models.media import Media
@@ -98,7 +99,7 @@ class ImageProcessor:
             匹配的 Media 记录，无匹配则返回 None
         """
         # 从路径中提取文件名
-        filename = os.path.basename(image_path)
+        filename = unquote(os.path.basename(image_path))
 
         for media in media_records:
             if media.original_name == filename:
