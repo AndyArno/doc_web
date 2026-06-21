@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     # JWT 配置
     SECRET_KEY: str  # 必须从环境变量加载
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     
     # 数据库配置
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/document_web"
